@@ -1,0 +1,459 @@
+app:
+  description: 把"医学新闻/论文" → 一键转换成"公众号+小红书+头条"多平台内容
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: AI医学内容生产 Workflow
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.15@725407927b04e236212083d20e92830d60fa944e42cd357ef6902c160414f6f1
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: http-request
+      id: 1777803914664-source-1777810099556-target
+      selected: false
+      source: '1777803914664'
+      sourceHandle: source
+      target: '1777810099556'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: end
+      id: 1777810099556-source-1777806065224-target
+      selected: false
+      source: '1777810099556'
+      sourceHandle: source
+      target: '1777806065224'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: llm
+      id: 1777867616237-source-1777803914664-target
+      selected: false
+      source: '1777867616237'
+      sourceHandle: source
+      target: '1777803914664'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: llm
+      id: 1777866543760-source-1777868471909-target
+      source: '1777866543760'
+      sourceHandle: source
+      target: '1777868471909'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: http-request
+      id: 1777868797020-source-1777866543760-target
+      source: '1777868797020'
+      sourceHandle: source
+      target: '1777866543760'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: http-request
+      id: 1777868471909-source-1777867616237-target
+      source: '1777868471909'
+      sourceHandle: source
+      target: '1777867616237'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params: {}
+          mode: chat
+          name: deepseek-v4-pro
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 3d0143d6-9a40-4f68-ad9c-0b1f70758bec
+          role: system
+          text: '你是一名医学内容专家，你将收到一段PubMed XML，请：
+
+
+            1. 提取：
+
+            - 标题
+
+            - 摘要
+
+
+            2. 基于摘要生成：
+
+            - 中文标题
+
+            - 中文摘要（通俗）
+
+            - 关键词（3-5个）
+
+            - 证据等级（RCT/Meta/Review/Opinion）
+
+            - 公众号文章（专业、有逻辑、有深度）
+
+            - 小红书内容（口语化、有emoji、有行动建议）
+
+            - 行动建议
+
+
+
+            内容如下：
+
+            {{#1777867616237.body#}}'
+        selected: false
+        structured_output:
+          schema:
+            properties:
+              action_points:
+                type: string
+              evidence_level:
+                type: string
+              keywords:
+                type: string
+              public_post:
+                type: string
+              summary:
+                type: string
+              title:
+                type: string
+              xiaohongshu_post:
+                type: string
+            required:
+            - title
+            - summary
+            - keywords
+            - evidence_level
+            - public_post
+            - xiaohongshu_post
+            - action_points
+            type: object
+        structured_output_enabled: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1777803914664'
+      position:
+        x: 508.1012255805746
+        y: -34.578582832552
+      positionAbsolute:
+        x: 508.1012255805746
+        y: -34.578582832552
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1777803914664'
+          - structured_output
+          - title
+          value_type: object
+          variable: title
+        - value_selector:
+          - '1777803914664'
+          - structured_output
+          - summary
+          value_type: object
+          variable: summary
+        - value_selector:
+          - '1777803914664'
+          - structured_output
+          - keywords
+          value_type: object
+          variable: keywords
+        - value_selector:
+          - '1777803914664'
+          - structured_output
+          - evidence_level
+          value_type: object
+          variable: evidence_level
+        - value_selector:
+          - '1777803914664'
+          - structured_output
+          - public_post
+          value_type: object
+          variable: public_post
+        - value_selector:
+          - '1777803914664'
+          - structured_output
+          - xiaohongshu_post
+          value_type: object
+          variable: xiaohongshu_post
+        - value_selector:
+          - '1777803914664'
+          - structured_output
+          - action_points
+          value_type: object
+          variable: action_points
+        selected: false
+        title: Output
+        type: end
+      height: 244
+      id: '1777806065224'
+      position:
+        x: 1195.6110818904197
+        y: -54.28289819718718
+      positionAbsolute:
+        x: 1195.6110818904197
+        y: -54.28289819718718
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-75
+            key: ''
+            type: text
+            value: "{\n  \"parent\": {\n    \"database_id\": \"YOUR_NOTION_DATABASE_ID\"\n  },\n  \"properties\": {\n    \"Title\": {\n      \"title\": [\n        {\n          \"text\": {\n            \"content\": \"{{{#1777803914664.structured_output.title#}}}}\"\n          }\n        }\n      ]\n    },\n    \"Summary\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{{#1777803914664.structured_output.summary#}}}}\"\n          }\n        }\n      ]\n    },\n    \"Keywords\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{{#1777803914664.structured_output.keywords#}}}}\"\n          }\n        }\n      ]\n    },\n    \"Evidence\": {\n      \"select\": {\n        \"name\": \"{{{#1777803914664.structured_output.evidence_level#}}}}\"\n      }\n    }\n  }\n}"
+          type: json
+        headers: 'Authorization: Bearer YOUR_NOTION_API_TOKEN
+          Notion-Version:2022-06-28'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP Request
+        type: http-request
+        url: https://api.notion.com/v1/pages
+        variables: []
+      height: 138
+      id: '1777810099556'
+      position:
+        x: 871.0825788857312
+        y: -34.578582832552
+      positionAbsolute:
+        x: 871.0825788857312
+        y: -34.578582832552
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: ''
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: true
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP Request 2
+        type: http-request
+        url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=diabetes%20clinical%20trial&retmode=json&retmax=10&sort=date
+        variables: []
+      height: 202
+      id: '1777866543760'
+      position:
+        x: -193
+        y: 275
+      positionAbsolute:
+        x: -193
+        y: 275
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: ''
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP Request 3
+        type: http-request
+        url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id={{LLM 2.pmid}}&retmode=xml
+        variables: []
+      height: 198
+      id: '1777867616237'
+      position:
+        x: 201.60415570890734
+        y: -34.578582832552
+      positionAbsolute:
+        x: 201.60415570890734
+        y: -34.578582832552
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-v4-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: f6fc2426-87c8-4e6b-9f17-76f71052a997
+          role: system
+          text: "从以下JSON中提取第一个PMID：\n\n返回格式：\n{\n  \"pmid\": \"\"\n}\n\n只返回JSON\n\n\
+            数据如下：\n{{#1777866543760.body#}}"
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1777868471909'
+      position:
+        x: -79
+        y: -2
+      positionAbsolute:
+        x: -79
+        y: -2
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        selected: false
+        title: User Input
+        type: start
+        variables: []
+      height: 73
+      id: '1777868797020'
+      position:
+        x: -560
+        y: 291.5
+      positionAbsolute:
+        x: -560
+        y: 291.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 758.0876651600595
+      y: 361.42620266661703
+      zoom: 0.7578582832551991
+  rag_pipeline_variables: []
