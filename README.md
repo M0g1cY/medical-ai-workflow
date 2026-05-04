@@ -79,10 +79,17 @@
 
 ## 📸 项目效果展示
 ### 1. PubMed RSS 订阅配置
-![PubMed RSS 订阅](pubmed-rss.png)
+![PubMed RSS 订阅](pubmed-rss.jpg)
 
 ### 2. Notion 数据库自动归档效果
-![Notion 数据库](notion-database.png)
+![Notion 数据库](notion-database.jpg)
 
 ### 3. 完整运行示例
 ![完整运行示例](完整示例.ini)
+
+## 📄 简历参考话术
+【项目经历】医疗AI资讯自动化工作流
+- 独立搭建基于Dify的医学资讯自动化处理系统，实现文章结构化输出+Notion自动存储
+- 将人工内容整理效率提升90%以上，单篇处理时间从2-3小时压缩至10分钟
+- 项目已开源至GitHub：https://github.com/M0g1cY/medical-ai-workflow
+- 支持医学文章智能解析、多平台内容一键生成（公众号/小红书）
